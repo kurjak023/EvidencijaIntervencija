@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DomenskiSloj\DomenskiSloj.csproj" />
-    <ProjectReference Include="..\PrezentacioniSloj\PrezentacioniSloj.csproj" />
+	<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
+  <ItemGroup>
+	<ProjectReference Include="..\DomenskiSloj\DomenskiSloj.csproj" />
+	<ProjectReference Include="..\SlojPodataka\SlojPodataka.csproj" />
+  </ItemGroup>
+	
 </Project>
