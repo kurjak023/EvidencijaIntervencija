@@ -6,18 +6,14 @@ using System.Threading.Tasks;
 
 namespace SlojPodataka.Klase
 {
-    // Class: Intervencija - Predstavlja intervenciju koja može biti povezana sa oglasom.
-    // Responsibility:
-    // - Sadrži informacije o intervenciji (opis, datum, status).
-    // - Omogućava praćenje i ažuriranje statusa intervencije.
-    // Collaboration:
-    // - Sa klasom Oglas (intervencija može biti povezana sa oglasom).
-    // - Sa klasom Korisnik (korisnik koji je zadužen za intervenciju).
-
+ 
     public class clsIntervencija
     {
         private int _intervencijaID;
         private string _opis;
+        private int _oglasID;
+        private int _idkorisnika;
+        private int _zgradaID;
 
         public int IntervencijaID
         {
@@ -29,6 +25,24 @@ namespace SlojPodataka.Klase
         {
             get { return _opis; }
             set { _opis = value; }
+        }
+
+        public int OglasID
+        {
+            get { return _oglasID; }
+            set { _oglasID = value; }
+        }
+
+        public int IDKorisnika
+        {
+            get { return _idkorisnika; }
+            set { _idkorisnika = value; }
+        }
+
+        public int ZgradaID
+        {
+            get { return _zgradaID; }
+            set { _zgradaID = value; }
         }
 
     }

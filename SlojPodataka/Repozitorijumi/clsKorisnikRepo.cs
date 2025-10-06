@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace SlojPodataka.Repozitorijumi
 {
-    internal class clsKorisnikRepo : IKorisnikRepo
+    public class clsKorisnikRepo : IKorisnikRepo
     {
         //Polje za konekciju
         private string _stringKonekcije;
@@ -126,6 +126,7 @@ namespace SlojPodataka.Repozitorijumi
         }
         public bool IzmeniKorisnika(int StariID, clsKorisnik objNoviKorisnik) 
         {
+            //Promenljiva koja služi za proveru uspesnosti unosa
             int proveraUnosa = 0;
 
             SqlConnection Veza = new SqlConnection(_stringKonekcije);
@@ -144,9 +145,8 @@ namespace SlojPodataka.Repozitorijumi
             Veza.Close();
             Veza.Dispose();
 
+            //Vraća se true ako je uspesno
             return (proveraUnosa > 0);
         }
-
-
     }
 }

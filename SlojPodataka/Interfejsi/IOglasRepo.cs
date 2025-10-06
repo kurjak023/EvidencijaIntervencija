@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace SlojPodataka.Interfejsi
 {
-    internal interface IOglasRepo
+    public interface IOglasRepo
     {
         DataSet DajSveOglase();
-        DataSet DajOglasPoStatusu(string Status);
-        DataSet DajSveIntervencije();
-        DataSet DajSveIntervencijePoKorisniku(int IDKorisnika);
-        bool DodeliOglas(int IDOglasa);
-        bool OtkaziOglas(int IDOglasa);
-        bool ZavrsiOglas(int IDOglasa);
-        
+        DataSet DajAktivneOglase();
+        DataSet DajMojeOglase(int idKorisnika);
+        bool NoviOglas(string Adresa, string Naziv);
+        bool DodeliOglas(int IDOglasa, int IDKorisnika);
+        bool VratiOglasNaCekanju(int idOglasa, int idKorisnika);
     }
 }
