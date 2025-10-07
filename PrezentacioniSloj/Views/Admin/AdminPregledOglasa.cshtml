@@ -1,0 +1,46 @@
+﻿@using System.Data;
+@model DataSet
+@{
+    ViewData["Title"] = "Oglasi";
+}
+
+<h1>Spisak oglasa</h1>
+
+@if (Model != null && Model.Tables.Count > 0 && Model.Tables[0].Rows.Count > 0)
+
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IDOglasa</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>ZgradaID</th>
+                <th>Vreme</th>
+                <th>Status</th>
+                <th>IDKorisnika (dodeljen)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.Tables[0].Rows)
+
+            {
+                <tr>
+                    <td>@row["IDOglasa"]</td>
+                    <td>@row["Naziv"]</td>
+                    <td>@(row.Table.Columns.Contains("Adresa") ? row["Adresa"] : "-")</td>
+                    <td>@row["ZgradaID"]</td>
+                    <td>@(row.Table.Columns.Contains("Vreme") ? row["Vreme"] : "-")</td>
+                    <td>@row["Status"]</td>
+                    <td>@(row["IDKorisnika"] ?? "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+else
+
+{
+    <p>Nema oglasa.</p>
+}

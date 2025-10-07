@@ -1,0 +1,60 @@
+﻿@model SlojPodataka.Klase.clsKorisnik
+
+@{
+    ViewData["Title"] = "Izmenite korisnika";
+}
+
+<div class="card p-3">
+    <h4 class="text-center mb-4">Izmeni podatke</h4>
+
+    <form asp-action="IzmeniPodatke" method="post">
+        <!-- čuvamo stari ID (ako ga menjaš u SP-u) -->
+        <input type="hidden" name="StariID" value="@Model.IDKorisnika" />
+
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="Ime">Ime <span class="text-danger">*</span></label>
+                <input asp-for="Ime" class="form-control" />
+                <span asp-validation-for="Ime" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="Prezime">Prezime <span class="text-danger">*</span></label>
+                <input asp-for="Prezime" class="form-control" />
+                <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="form-group col-sm-6">
+                <label asp-for="KorisnickoIme">Korisničko ime <span class="text-danger">*</span></label>
+                <input asp-for="KorisnickoIme" class="form-control" />
+                <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="Lozinka">Lozinka <span class="text-danger">*</span></label>
+                <input asp-for="Lozinka" class="form-control" />
+                <span asp-validation-for="Lozinka" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="form-group col-sm-6">
+                <label asp-for="TipKorisnika">Tip korisnika</label>
+                <select asp-for="TipKorisnika" class="form-select">
+                    <option value="obican_korisnik" selected>obican_korisnik</option>
+                    <option value="admin" @(Model.TipKorisnika=="admin"?"selected":null)>admin</option>
+                </select>
+                <span asp-validation-for="TipKorisnika" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-6">
+                <label>ID (sadašnji)</label>
+                <input class="form-control" value="@Model.IDKorisnika" readonly />
+            </div>
+        </div>
+
+        <div class="btn-group btn-group-sm mt-3" role="group">
+            <button type="submit" class="btn btn-sm btn-success" name="action" value="izmeni">Sačuvaj izmene</button>
+            <a asp-action="AdminPregledKorisnika" class="btn btn-sm btn-secondary">Nazad</a>
+        </div>
+    </form>
+</div>

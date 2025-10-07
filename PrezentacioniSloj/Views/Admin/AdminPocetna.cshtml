@@ -1,0 +1,17 @@
+﻿@if (TempData["SuccessMessage"] != null)
+
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@{
+    ViewData["Title"] = "Početna";
+}
+
+<div class="text-center">
+    <h1>Dobrodošli, Admine</h1>
+
+    <a class="nav-link text-dark" asp-controller="Admin" asp-action="AdminPregledOglasa"><button>Pregled oglasa</button></a>
+    <a class="nav-link text-dark" asp-controller="Admin" asp-action="AdminOglasKreiraj"><button>Dodaj oglas</button></a>
+    <a class="nav-link text-dark" asp-controller="Admin" asp-action="AdminPregledIntervencija"><button>Pregled intervencija</button></a>
+</div>

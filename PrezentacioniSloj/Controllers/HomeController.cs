@@ -13,12 +13,17 @@ namespace PrezentacioniSloj.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Pocetna()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult OServisu()
+        {
+            return View();
+        }
+
+        public IActionResult PrijavaIliRegistracija()
         {
             return View();
         }
