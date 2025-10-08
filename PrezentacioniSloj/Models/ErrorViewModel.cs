@@ -1,4 +1,4 @@
-namespace EvidencijaIntervencija.Models
+namespace PrezentacioniSloj.Models
 {
     public class ErrorViewModel
     {
