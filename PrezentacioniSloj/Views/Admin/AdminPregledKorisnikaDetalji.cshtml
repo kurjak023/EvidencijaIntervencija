@@ -41,8 +41,8 @@
             <div class="form-group col-sm-6">
                 <label asp-for="TipKorisnika">Tip korisnika</label>
                 <select asp-for="TipKorisnika" class="form-select">
-                    <option value="obican_korisnik" selected>obican_korisnik</option>
-                    <option value="admin" @(Model.TipKorisnika=="admin"?"selected":null)>admin</option>
+                    <option value="obican_korisnik">obican_korisnik</option>
+                    <option value="admin">admin</option>
                 </select>
                 <span asp-validation-for="TipKorisnika" class="text-danger"></span>
             </div>

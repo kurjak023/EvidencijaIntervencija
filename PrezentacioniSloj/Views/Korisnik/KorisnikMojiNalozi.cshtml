@@ -1,0 +1,54 @@
+﻿@using System.Data
+@model DataSet
+
+@{
+    ViewData["Title"] = "Moji radni nalozi";
+}
+
+<div class="text-center">
+    <h2>Moji radni nalozi</h2>
+</div>
+
+@if (Model != null && Model.Tables.Count > 0 && Model.Tables[0].Rows.Count > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Status</th>
+                <th>Vreme</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow r in Model.Tables[0].Rows)
+            {
+                <tr>
+                    <td>@r["IDOglasa"]</td>
+                    <td>@r["Naziv"]</td>
+                    <td>@r["Adresa"]</td>
+                    <td>@r["Status"]</td>
+                    <td>@r["Vreme"]</td>
+                    <td>
+                        <a class="btn btn-sm btn-success"
+                           asp-area=""
+                           asp-controller="Korisnik"
+                           asp-action="KorisnikZavrsi"
+                           asp-route-id="@r["IDOglasa"]">Završi</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Trenutno nemate dodeljene naloge.</div>
+}
+
+<div class="mt-2">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Korisnik" asp-action="KorisnikPocetna"><button>Nazad</button></a>
+    <a class="nav-link text-dark d-inline-block" asp-area="" asp-controller="Korisnik" asp-action="KorisnikSlobodniOglasi"><button>Slobodni nalozi</button></a>
+</div>

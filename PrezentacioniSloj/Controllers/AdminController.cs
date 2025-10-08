@@ -85,7 +85,7 @@ namespace PrezentacioniSloj.Controllers
             return View();
         }
 
-            [HttpPost]
+        [HttpPost]
         public IActionResult DodajOglas(string naziv, string adresa)
         {
             bool ok;
@@ -116,24 +116,8 @@ namespace PrezentacioniSloj.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult IzmeniPodatke(string action, clsKorisnik model, int StariID)
-        {
-            if (action == "izmeni")
-            {
-                int stariID = StariID;
 
-                _korisnikServis.Izmeni(StariID, model);
-
-                TempData["SuccessMessage"] = "Uspešno izvršeno!";
-                return RedirectToAction("AdminPocetna");
-            }
-
-            return View();
-        }
-
-
-    [HttpGet]
+        [HttpGet]
         public IActionResult AdminPregledIntervencija(int? korisnikId, int? zgradaId)
         {
             DataSet dataSet;
@@ -157,6 +141,5 @@ namespace PrezentacioniSloj.Controllers
 
             return View("AdminPregledIntervencija", dataSet);
         }
-    }
     }
 }

@@ -52,5 +52,33 @@ namespace DomenskiSloj
         {
             return _repoOglas.VratiOglasNaCekanju(oglasId, korisnikId);
         }
+
+        // 4) Završavanje oglasa - opis intervencije je obavezan, min 5, max 100 karaktera
+        public bool ZavrsiOglas(int IDOglasa, int IDKorisnika, string opisIntervencije)
+        {
+            if (string.IsNullOrWhiteSpace(opisIntervencije))
+            {
+                LastError = "Opis intervencije ne može biti prazan.";
+                return false;
+            }
+
+            int duzina = opisIntervencije.Trim().Length;
+
+            if (duzina < 5)
+            {
+                LastError = "Opis intervencije mora imati najmanje 5 karaktera.";
+                return false;
+            }
+
+            if (duzina > 100)
+            {
+                LastError = "Opis intervencije može imati najviše 100 karaktera.";
+                return false;
+            }
+
+            LastError = "";
+            return true;
+        }
+        public string LastError { get; private set; } = "";
     }
 }

@@ -1,0 +1,53 @@
+﻿@using System.Data
+@model DataSet
+
+@{
+    ViewData["Title"] = "Slobodni radni nalozi";
+}
+
+<div class="text-center">
+    <h2>Slobodni radni nalozi</h2>
+</div>
+
+@if (Model != null && Model.Tables.Count > 0 && Model.Tables[0].Rows.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Status</th>
+                <th>Vreme</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow r in Model.Tables[0].Rows)
+            {
+                <tr>
+                    <td>@r["IDOglasa"]</td>
+                    <td>@r["Naziv"]</td>
+                    <td>@r["Adresa"]</td>
+                    <td>@r["Status"]</td>
+                    <td>@r["Vreme"]</td>
+                    <td>
+                        <form asp-action="KorisnikDodeli" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@r["IDOglasa"]" />
+                            <button type="submit" class="btn btn-sm btn-primary">Dodeli sebi</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Nema slobodnih naloga.</div>
+}
+
+<div class="mt-2">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Korisnik" asp-action="KorisnikPocetna"><button>Nazad</button></a>
+    <a class="nav-link text-dark d-inline-block" asp-area="" asp-controller="Korisnik" asp-action="KorisnikMojiNalozi"><button>Moji radni nalozi</button></a>
+</div>

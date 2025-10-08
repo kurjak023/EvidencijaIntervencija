@@ -1,15 +1,8 @@
 ﻿@using System.Data;
 @model DataSet
 @{
-    ViewData["Title"] = "Radni nalozi";
+    ViewData["Title"] = "Intervencije";
 }
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0">Spisak radnih naloga</h1>
-    <a class="btn btn-success" asp-controller="Admin" asp-action="AdminOglasKreiraj">
-        + Dodaj radni nalog
-    </a>
-</div>
 
 @if (TempData["SuccessMessage"] != null)
 
@@ -23,13 +16,12 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>IDOglasa</th>
-                <th>Naziv</th>
+                <th>IDIntervencije</th>
+                <th>Opis</th>
                 <th>Adresa</th>
                 <th>ZgradaID</th>
-                <th>Vreme</th>
-                <th>Status</th>
-                <th>IDKorisnika (dodeljen)</th>
+                <th>IDKorisnika</th>
+                <th>Korisnik</th>
             </tr>
         </thead>
         <tbody>
@@ -37,13 +29,12 @@
 
             {
                 <tr>
-                    <td>@row["IDOglasa"]</td>
-                    <td>@row["Naziv"]</td>
+                    <td>@row["IDIntervencije"]</td>
+                    <td>@row["Opis"]</td>
                     <td>@(row.Table.Columns.Contains("Adresa") ? row["Adresa"] : "-")</td>
                     <td>@row["ZgradaID"]</td>
-                    <td>@(row.Table.Columns.Contains("Vreme") ? row["Vreme"] : "-")</td>
-                    <td>@row["Status"]</td>
                     <td>@(row["IDKorisnika"] ?? "-")</td>
+                    <td>@(row["Korisnik"] ?? "-")</td>
                 </tr>
             }
         </tbody>
@@ -53,5 +44,5 @@
 else
 
 {
-    <p>Nema oglasa.</p>
+    <p>Nema intervencija.</p>
 }

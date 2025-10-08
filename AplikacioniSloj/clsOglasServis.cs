@@ -57,5 +57,10 @@ namespace AplikacioniSloj
         {
             return _poslovnaPravila.VratiOglasNaCekanju(IDOglasa, IDKorisnika);
         }
+
+        public bool Zavrsi(int IDOglasa, int IDKorisnika, string opisIntervencije)
+        {
+            return _poslovnaPravila.ZavrsiOglas(IDOglasa, IDKorisnika, opisIntervencije);
+        }
     }
 }

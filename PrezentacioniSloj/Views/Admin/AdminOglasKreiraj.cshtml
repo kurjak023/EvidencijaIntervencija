@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Dodaj oglas";
+}
+
+<h2 class="mb-3">Dodaj radni nalog</h2>
+
+@if (TempData["Err"] != null)
+{
+    <div class="alert alert-danger">@TempData["Err"]</div>
+}
+
+<form asp-controller="Admin" asp-action="DodajOglas" method="post">
+    <div class="mb-3">
+        <label class="form-label" for="naziv">Naziv <span class="text-danger">*</span></label>
+        <input class="form-control" id="naziv" name="naziv" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="adresa">Adresa <span class="text-danger">*</span></label>
+        <input class="form-control" id="adresa" name="adresa" required />
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Sačuvaj</button>
+        <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="AdminPregledOglasa">Otkaži</a>
+    </div>
+</form>

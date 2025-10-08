@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Završi nalog";
+    var id = ViewBag.IDOglasa;
+}
+
+<div class="text-center">
+    <h2>Završi nalog #@id</h2>
+</div>
+
+<form asp-action="KorisnikPotvrdiZavrsetak" method="post">
+    <input type="hidden" name="id" value="@id" />
+
+    <div class="mb-3">
+        <label for="OpisIntervencije" class="form-label">Opis intervencije</label>
+        <textarea id="OpisIntervencije" name="OpisIntervencije" class="form-control" rows="6"></textarea>
+    </div>
+
+    <div class="btn-group btn-group-sm" role="group">
+        <button type="submit" class="btn btn-sm btn-success">Sačuvaj</button>
+        <a class="btn btn-sm btn-secondary" asp-area="" asp-controller="Korisnik" asp-action="KorisnikMojiNalozi">Otkaži</a>
+    </div>
+</form>
+
+<div class="mt-2">
+    <a class="nav-link text-dark d-inline-block" asp-area="" asp-controller="Korisnik" asp-action="KorisnikSlobodniOglasi"><button>← Nazad na slobodne</button></a>
+</div>
