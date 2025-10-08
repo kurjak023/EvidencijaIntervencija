@@ -13,10 +13,9 @@ namespace SlojPodataka.Interfejsi
         DataSet DajSveKorisnike();
         DataSet DajKorisnikaPoPrezimenu(string Prezime);
         DataSet DajKorisnikaPoID(int IDKorisnika);
-        DataSet DajKorisnikaPoKorisnickomImenu(string KorisnickoIme);
         bool NoviKorisnik(clsKorisnik objNoviKorisnik);
         bool ObrisiKorisnika(int IDKorisnika);
         bool IzmeniKorisnika(int StariID, clsKorisnik objNoviKorisnik);
-
+        clsKorisnik DajKorisnikaPoKorisnickomImenu(string KorisnickoIme);
     }
 }

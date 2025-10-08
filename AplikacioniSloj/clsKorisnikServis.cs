@@ -29,7 +29,7 @@ namespace AplikacioniSloj
             return _repo.DajKorisnikaPoPrezimenu(prezime);
         }
 
-        public DataSet PrikaziPoKorisnickomImenu(string KorisnickoIme)
+        public clsKorisnik PrikaziPoKorisnickomImenu(string KorisnickoIme)
         {
             return _repo.DajKorisnikaPoKorisnickomImenu(KorisnickoIme);
         }

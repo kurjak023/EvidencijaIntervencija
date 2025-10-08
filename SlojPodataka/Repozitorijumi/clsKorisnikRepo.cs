@@ -70,23 +70,7 @@ namespace SlojPodataka.Repozitorijumi
 
             return dsPodaci;
         }
-        public DataSet DajKorisnikaPoKorisnickomImenu(string KorisnickoIme)
-        {
-            DataSet dsPodaci = new DataSet();
-
-            SqlConnection Veza = new SqlConnection(_stringKonekcije);
-            Veza.Open();
-            SqlCommand Komanda = new SqlCommand("DajKorisnikaPoKorisnickomImenu", Veza);
-            Komanda.CommandType = CommandType.StoredProcedure;
-            Komanda.Parameters.Add("@KorisnickoIme", SqlDbType.NVarChar).Value = KorisnickoIme;
-            SqlDataAdapter da = new SqlDataAdapter();
-            da.SelectCommand = Komanda;
-            da.Fill(dsPodaci);
-            Veza.Close();
-            Veza.Dispose();
-
-            return dsPodaci;
-        }
+        
         public bool NoviKorisnik(clsKorisnik objNoviKorisnik)
         { 
             int proveraUnosa = 0;
@@ -147,6 +131,43 @@ namespace SlojPodataka.Repozitorijumi
 
             //Vraća se true ako je uspesno
             return (proveraUnosa > 0);
+        }
+        public clsKorisnik DajKorisnikaPoKorisnickomImenu(string KorisnickoIme)
+        {
+            using (SqlConnection Veza = new SqlConnection(_stringKonekcije))
+            {
+
+                Veza.Open();
+                SqlCommand Komanda = new SqlCommand("DajKorisnikaPoKorisnickomImenu", Veza);
+                Komanda.CommandType = CommandType.StoredProcedure;
+                Komanda.Parameters.Add("@KorisnickoIme", SqlDbType.NVarChar).Value = KorisnickoIme;
+
+                using (SqlDataReader Reader = Komanda.ExecuteReader())
+                {
+                    if (Reader.Read())
+                    {
+                        return MapirajRedUObjekat(Reader);
+                    }
+                    else
+                    {
+                        return null; // Nema pronađenog korisnika sa datim email-om
+                    }
+                }
+            }
+
+
+        }
+        private clsKorisnik MapirajRedUObjekat(SqlDataReader reader)
+        {
+            return new clsKorisnik
+            {
+                IDKorisnika = Convert.ToInt32(reader["IDKorisnika"]),
+                Ime = reader["Ime"].ToString(),
+                Prezime = reader["Prezime"].ToString(),
+                KorisnickoIme = reader["KorisnickoIme"]?.ToString(),
+                Lozinka = reader["Lozinka"].ToString(),
+                TipKorisnika = reader["TipKorisnika"].ToString(),
+            };
         }
     }
 }

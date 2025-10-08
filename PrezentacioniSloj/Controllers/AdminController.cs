@@ -48,62 +48,20 @@ namespace PrezentacioniSloj.Controllers
         [HttpPost]
         public IActionResult IzmeniKorisnika(string? korisnickoime, string? action, int idkorisnika)
         {
-            if (string.IsNullOrEmpty(action))
+            if (!string.IsNullOrEmpty(korisnickoime))
             {
-                TempData["Err"] = "Nepoznata akcija.";
-                return RedirectToAction("AdminPregledKorisnika");
-            }
-
-            if (action == "izmeni")
-            {
-                if (!string.IsNullOrEmpty(korisnickoime))
+                if (action == "izmeni")
                 {
-                    clsKorisnik? korisnik = _korisnikServis.PrikaziPoKorisnickomImenu(korisnickoime);
-
-                    if (korisnik != null)
-                    {
-                        return View("AdminPregledKorisnikaDetalji", korisnik);
-                    }
-                    else
-                    {
-                        TempData["Err"] = "Korisnik nije pronađen.";
-                        return RedirectToAction("AdminPregledKorisnika");
-                    }
+                    clsKorisnik korisnik = _korisnikServis.PrikaziPoKorisnickomImenu(korisnickoime);
+                    return View("AdminPregledKorisnikaDetalji", korisnik);
                 }
-                else
+                if (action == "obrisi")
                 {
-                    TempData["Err"] = "Korisničko ime nije prosleđeno.";
-                    return RedirectToAction("AdminPregledKorisnika");
+                    _korisnikServis.Obrisi(idkorisnika);
                 }
             }
-            else if (action == "obrisi")
-            {
-                if (idkorisnika > 0)
-                {
-                    bool ok = _korisnikServis.Obrisi(idkorisnika);
 
-                    if (ok)
-                    {
-                        TempData["SuccessMessage"] = "Korisnik uspešno obrisan.";
-                    }
-                    else
-                    {
-                        TempData["Err"] = "Brisanje korisnika nije uspelo.";
-                    }
-
-                    return RedirectToAction("AdminPregledKorisnika");
-                }
-                else
-                {
-                    TempData["Err"] = "ID korisnika nije prosleđen.";
-                    return RedirectToAction("AdminPregledKorisnika");
-                }
-            }
-            else
-            {
-                TempData["Err"] = "Nepoznata akcija.";
-                return RedirectToAction("AdminPregledKorisnika");
-            }
+            return RedirectToAction("AdminPregledKorisnika");
         }
 
         [HttpGet]

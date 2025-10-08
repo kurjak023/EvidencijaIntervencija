@@ -51,53 +51,59 @@ namespace PrezentacioniSloj.Controllers
             // Ako ModelState nije validan, vraća se isti view sa postojećim podacima
             return View(model);
         }
+
         [HttpGet]
         public ActionResult Prijava()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Prijava(PrijavaModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            // 1) Učitaj korisnika po korisničkom imenu
-            DataSet ds = _korisnikServis.PrikaziPoKorisnickomImenu(model.KorisnickoIme);
-
-            if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Nema korisnika sa navedenim korisničkim imenom!");
-                return View(model);
+                // Pozovi metodu iz servisa koja proverava korisničke podatke
+                var prijavljeniKorisnik = _korisnikServis.PrikaziPoKorisnickomImenu(model.KorisnickoIme);
+
+                if (prijavljeniKorisnik != null)
+                {
+                    // Ako je pronađen korisnik sa datom e-poštom, proveri lozinku
+                    if (prijavljeniKorisnik.Lozinka == model.Lozinka)
+                    {
+                        // Lozinka je ispravna, postavi korisničke podatke u sesiju
+                        HttpContext.Session.SetInt32("KorisnikID", prijavljeniKorisnik.IDKorisnika); 
+                        HttpContext.Session.SetString("Ime", prijavljeniKorisnik.Ime);
+                        HttpContext.Session.SetString("Prezime", prijavljeniKorisnik.Prezime);
+                        HttpContext.Session.SetString("Email", prijavljeniKorisnik.KorisnickoIme);
+                        HttpContext.Session.SetString("Lozinka", prijavljeniKorisnik.Lozinka);
+                        HttpContext.Session.SetString("TipKorisnika", prijavljeniKorisnik.TipKorisnika);
+
+                        // Redirekcija na odgovarajući view u zavisnosti od toga kog tipa je korisnik
+                        if (prijavljeniKorisnik.TipKorisnika == "admin")
+                        {
+                            return RedirectToAction("AdminPocetna", "Admin");
+                        }
+                        else if (prijavljeniKorisnik.TipKorisnika == "obican_korisnik")
+                        {
+                            return RedirectToAction("KorisnikPocetna", "Korisnik");
+                        }
+                    }
+                    else
+                    {
+                        // Pogrešna lozinka
+                        ModelState.AddModelError(string.Empty, "Pogrešna lozinka");
+                    }
+                }
+                else
+                {
+                    // Nema korisnika sa datom e-mailom
+                    ModelState.AddModelError(string.Empty, "Nema korisnika u bazi podataka sa navedenim e-mailom!");
+                }
             }
 
-            // 2) Uzmi prvi red i proveri lozinku
-            var row = ds.Tables[0].Rows[0];
-
-            string lozinkaDb = row["Lozinka"]?.ToString() ?? "";
-            string tipKorisnika = row["TipKorisnika"]?.ToString() ?? "obican_korisnik";
-            string ime = row["Ime"]?.ToString() ?? "";
-            string prezime = row["Prezime"]?.ToString() ?? "";
-            string korisnickoIme = row["KorisnickoIme"]?.ToString() ?? "";
-            int idKorisnika = int.TryParse(row["IDKorisnika"]?.ToString(), out var id) ? id : 0;
-
-            if (lozinkaDb != model.Lozinka)
-            {
-                ModelState.AddModelError(string.Empty, "Pogrešna lozinka");
-                return View(model);
-            }
-
-            // 3) Sesija
-            HttpContext.Session.SetInt32("KorisnikID", idKorisnika);
-            HttpContext.Session.SetString("KorisnickoIme", korisnickoIme);
-            HttpContext.Session.SetString("Ime", ime);
-            HttpContext.Session.SetString("Prezime", prezime);
-            HttpContext.Session.SetString("TipKorisnika", tipKorisnika);
-
-            // 4) Redirect po ulozi
-            if (tipKorisnika == "admin")
-                return RedirectToAction("AdminPocetna", "Admin");
-
-            return RedirectToAction("KorisnikPocetna", "Korisnik");
+            // Ako ModelState nije validan, vraća se isti view sa postojećim podacima
+            return View(model);
         }
     }
 }

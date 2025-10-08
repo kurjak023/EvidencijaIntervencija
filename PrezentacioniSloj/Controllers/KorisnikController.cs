@@ -13,7 +13,10 @@ namespace PrezentacioniSloj.Controllers
         }
 
         // /Korisnik/KorisnikPocetna
-        public IActionResult KorisnikPocetna() => View();
+        public IActionResult KorisnikPocetna()
+        {
+            return View();
+        }
 
         // /Korisnik/KorisnikProfil
         // Čita podatke iz sesije i puni formu (RegistracijaModel) za prikaz/izmenu
