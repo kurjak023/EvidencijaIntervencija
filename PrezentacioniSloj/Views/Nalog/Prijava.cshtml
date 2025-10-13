@@ -6,6 +6,9 @@
 
 <div class="card">
     <h4 class="text-center mb-4">Prijava</h4>
+    <div asp-validation-summary="All"
+         class="@(ViewData.ModelState.ErrorCount > 0 ? "alert alert-danger" : "")">
+    </div>
     <form asp-action="Prijava" method="post" class="form">
         <div class="row text-center">
             <div class="form-group col-sm-4 flex-column d-flex">
@@ -24,3 +27,6 @@
         <button type="submit" class="btn btn-sm btn-success">Prijavi se</button>
     </form>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
