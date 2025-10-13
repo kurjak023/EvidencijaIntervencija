@@ -49,10 +49,12 @@ namespace PrezentacioniSloj.Controllers
         [HttpPost]
         public IActionResult KorisnikDodeli(int id)
         {
-            var idKorisnika = HttpContext.Session.GetInt32("IDKorisnika");
-            if (idKorisnika == null) return RedirectToAction(nameof(KorisnikPocetna));
+            var uid = HttpContext.Session.GetInt32("IDKorisnika");
+            if (uid == null) return RedirectToAction(nameof(KorisnikPocetna));
 
-            _oglasServis.Dodeli(id, idKorisnika.Value);
+            var ok = _oglasServis.Dodeli(id, uid.Value);
+            TempData[ok ? "SuccessMessage" : "ErrorMessage"] =
+                ok ? "Oglas dodeljen." : (_oglasServis.LastError ?? "Neuspešno.");
             return RedirectToAction(nameof(KorisnikMojiNalozi));
         }
 

@@ -25,13 +25,25 @@ namespace DomenskiSloj
 
         ///Pravila:
         // 1) Admin NE preuzima oglase
-         public bool PreuzmiOglas(int oglasId, int korisnikId)
+        public bool PreuzmiOglas(int oglasId, int korisnikId)
         {
             var ds = _repoKorisnik.DajKorisnikaPoID(korisnikId);
-            if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0) return false;
+            if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+            {
+                LastError = "Nepostojeći korisnik.";
+                return false;
+            }
 
-            var tip = ds.Tables[0].Rows[0]["TipKorisnika"]?.ToString();
-            return tip == "obican_korisnik"; // samo običan korisnik preuzima
+            var tipRaw = ds.Tables[0].Rows[0]["TipKorisnika"]?.ToString();
+            var tip = tipRaw?.Trim();
+            if (!string.Equals(tip, "obican_korisnik", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(tip, "korisnik", StringComparison.OrdinalIgnoreCase))
+            {
+                LastError = $"Zabranjeno: tip korisnika = '{tipRaw}'.";
+                return false;
+            }
+
+            return true;
         }
 
         // 2) Novi oglas kreira SAMO admin; adresa i naziv su obavezni

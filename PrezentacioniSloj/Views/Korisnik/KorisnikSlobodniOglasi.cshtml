@@ -25,15 +25,16 @@
         <tbody>
             @foreach (DataRow r in Model.Tables[0].Rows)
             {
+                var oglasId = Convert.ToInt32(r["IDOglasa"]);
                 <tr>
-                    <td>@r["IDOglasa"]</td>
+                    <td>@oglasId</td>
                     <td>@r["Naziv"]</td>
                     <td>@r["Adresa"]</td>
                     <td>@r["Status"]</td>
                     <td>@r["Vreme"]</td>
                     <td>
-                        <form asp-action="KorisnikDodeli" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@r["IDOglasa"]" />
+                        <form asp-controller="Korisnik" asp-action="KorisnikDodeli" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@oglasId" />
                             <button type="submit" class="btn btn-sm btn-primary">Dodeli sebi</button>
                         </form>
                     </td>

@@ -83,7 +83,7 @@ namespace SlojPodataka.Repozitorijumi
             Komanda.CommandType = CommandType.StoredProcedure;
             Komanda.Parameters.Add("@IDOglasa", SqlDbType.Int).Value = IDOglasa;
             Komanda.Parameters.Add("@IDKorisnika", SqlDbType.Int).Value = IDKorisnika;
-            Komanda.Parameters.Add("@Opis", SqlDbType.NVarChar).Value = Opis;
+            Komanda.Parameters.Add("@Opis", SqlDbType.NVarChar, 100).Value = Opis;
 
             proveraUnosa = Komanda.ExecuteNonQuery();
             Veza.Close();
@@ -93,3 +93,4 @@ namespace SlojPodataka.Repozitorijumi
         }
     }
 }
+    

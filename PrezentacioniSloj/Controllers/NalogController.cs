@@ -22,6 +22,60 @@ namespace PrezentacioniSloj.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public ActionResult Prijava()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Prijava(PrijavaModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Pozovi metodu iz servisa koja proverava korisničke podatke
+                var prijavljeniKorisnik = _korisnikServis.PrikaziPoKorisnickomImenu(model.KorisnickoIme);
+
+                if (prijavljeniKorisnik != null)
+                {
+                    // Ako je pronađen korisnik sa datom e-poštom, proveri lozinku
+                    if (prijavljeniKorisnik.Lozinka == model.Lozinka)
+                    {
+                        // Lozinka je ispravna, postavi korisničke podatke u sesiju
+                        HttpContext.Session.SetInt32("IDKorisnika", prijavljeniKorisnik.IDKorisnika); 
+                        HttpContext.Session.SetString("Ime", prijavljeniKorisnik.Ime);
+                        HttpContext.Session.SetString("Prezime", prijavljeniKorisnik.Prezime);
+                        HttpContext.Session.SetString("Email", prijavljeniKorisnik.KorisnickoIme);
+                        HttpContext.Session.SetString("Lozinka", prijavljeniKorisnik.Lozinka);
+                        HttpContext.Session.SetString("TipKorisnika", prijavljeniKorisnik.TipKorisnika);
+
+                        // Redirekcija na odgovarajući view u zavisnosti od toga kog tipa je korisnik
+                        if (prijavljeniKorisnik.TipKorisnika == "admin")
+                        {
+                            return RedirectToAction("AdminPocetna", "Admin");
+                        }
+                        else if (prijavljeniKorisnik.TipKorisnika == "obican_korisnik")
+                        {
+                            return RedirectToAction("KorisnikPocetna", "Korisnik");
+                        }
+                    }
+                    else
+                    {
+                        // Pogrešna lozinka
+                        ModelState.AddModelError(string.Empty, "Pogrešna lozinka");
+                    }
+                }
+                else
+                {
+                    // Nema korisnika sa datom e-mailom
+                    ModelState.AddModelError(string.Empty, "Nema korisnika u bazi podataka sa navedenim e-mailom!");
+                }
+            }
+
+            // Ako ModelState nije validan, vraća se isti view sa postojećim podacima
+            return View(model);
+        }
+
 
         // POST: /Nalog/Registracija
         [HttpPost]
@@ -70,58 +124,6 @@ namespace PrezentacioniSloj.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult Prijava()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Prijava(PrijavaModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Pozovi metodu iz servisa koja proverava korisničke podatke
-                var prijavljeniKorisnik = _korisnikServis.PrikaziPoKorisnickomImenu(model.KorisnickoIme);
-
-                if (prijavljeniKorisnik != null)
-                {
-                    // Ako je pronađen korisnik sa datom e-poštom, proveri lozinku
-                    if (prijavljeniKorisnik.Lozinka == model.Lozinka)
-                    {
-                        // Lozinka je ispravna, postavi korisničke podatke u sesiju
-                        HttpContext.Session.SetInt32("KorisnikID", prijavljeniKorisnik.IDKorisnika); 
-                        HttpContext.Session.SetString("Ime", prijavljeniKorisnik.Ime);
-                        HttpContext.Session.SetString("Prezime", prijavljeniKorisnik.Prezime);
-                        HttpContext.Session.SetString("Email", prijavljeniKorisnik.KorisnickoIme);
-                        HttpContext.Session.SetString("Lozinka", prijavljeniKorisnik.Lozinka);
-                        HttpContext.Session.SetString("TipKorisnika", prijavljeniKorisnik.TipKorisnika);
-
-                        // Redirekcija na odgovarajući view u zavisnosti od toga kog tipa je korisnik
-                        if (prijavljeniKorisnik.TipKorisnika == "admin")
-                        {
-                            return RedirectToAction("AdminPocetna", "Admin");
-                        }
-                        else if (prijavljeniKorisnik.TipKorisnika == "obican_korisnik")
-                        {
-                            return RedirectToAction("KorisnikPocetna", "Korisnik");
-                        }
-                    }
-                    else
-                    {
-                        // Pogrešna lozinka
-                        ModelState.AddModelError(string.Empty, "Pogrešna lozinka");
-                    }
-                }
-                else
-                {
-                    // Nema korisnika sa datom e-mailom
-                    ModelState.AddModelError(string.Empty, "Nema korisnika u bazi podataka sa navedenim e-mailom!");
-                }
-            }
-
-            // Ako ModelState nije validan, vraća se isti view sa postojećim podacima
-            return View(model);
-        }
+        
     }
 }

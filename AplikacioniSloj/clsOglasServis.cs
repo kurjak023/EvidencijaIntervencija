@@ -14,13 +14,15 @@ namespace AplikacioniSloj
         private IOglasRepo _repo;
         private clsPoslovnaPravila _poslovnaPravila;
 
+        public string? LastError { get; private set; }
+
 
         //Konstruktor
         public clsOglasServis(IOglasRepo repo, clsPoslovnaPravila poslovnaPravila)
         {
             _repo = repo;
             _poslovnaPravila = poslovnaPravila;
-
+            LastError = null;
         }
 
         public DataSet Prikazi()
@@ -47,9 +49,14 @@ namespace AplikacioniSloj
         public bool Dodeli(int IDOglasa, int IDKorisnika)
         {
             if (!_poslovnaPravila.PreuzmiOglas(IDOglasa, IDKorisnika))
+            {
+                LastError = _poslovnaPravila.LastError; // propagacija
                 return false;
+            }
 
-            return _repo.DodeliOglas(IDOglasa, IDKorisnika);
+            var ok = _repo.DodeliOglas(IDOglasa, IDKorisnika);
+            if (!ok) LastError = "Oglas nije moguće dodeliti (možda je već preuzet ili status nije 'Na čekanju').";
+            return ok;
         }
 
 
@@ -60,7 +67,13 @@ namespace AplikacioniSloj
 
         public bool Zavrsi(int IDOglasa, int IDKorisnika, string opisIntervencije)
         {
-            return _poslovnaPravila.ZavrsiOglas(IDOglasa, IDKorisnika, opisIntervencije);
+            if (!_poslovnaPravila.ZavrsiOglas(IDOglasa, IDKorisnika, opisIntervencije))
+            {
+                LastError = _poslovnaPravila.LastError;
+                return false;
+            }
+
+            return true;
         }
     }
 }

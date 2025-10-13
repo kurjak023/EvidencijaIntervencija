@@ -14,7 +14,7 @@ namespace SlojPodataka.Klase
         private int _idKorisnika;
         private int _zgradaid;
         private DateTime _vreme;
-        private string _status; // Status oglasa ("Na cekanju", "Dodeljen", "Zavrsen")
+        private string _status; // Status oglasa ("Na čekanju", "Dodeljen", "Završen")
 
         public int IDOglasa
         {
