@@ -43,7 +43,7 @@
                     <td>@row["ZgradaID"]</td>
                     <td>@(row.Table.Columns.Contains("Vreme") ? row["Vreme"] : "-")</td>
                     <td>@row["Status"]</td>
-                    <td>@(row["IDKorisnika"] ?? "-")</td>
+                    <td>@(row.IsNull("IDKorisnika") ? "-" : row["IDKorisnika"])</td>
                 </tr>
             }
         </tbody>

@@ -83,7 +83,6 @@ namespace SlojPodataka.Repozitorijumi
             Komanda.Parameters.Add("@Prezime", SqlDbType.NVarChar).Value = objNoviKorisnik.Prezime;
             Komanda.Parameters.Add("@KorisnickoIme", SqlDbType.NVarChar).Value = objNoviKorisnik.KorisnickoIme;
             Komanda.Parameters.Add("@Lozinka", SqlDbType.NVarChar).Value = objNoviKorisnik.Lozinka;
-            Komanda.Parameters.Add("@TipKorisnika", SqlDbType.NVarChar).Value = objNoviKorisnik.TipKorisnika;
             
             proveraUnosa = Komanda.ExecuteNonQuery();
             Veza.Close();
@@ -91,6 +90,7 @@ namespace SlojPodataka.Repozitorijumi
 
             return (proveraUnosa > 0);
         }
+
         public bool ObrisiKorisnika(int IDKorisnika)
         {
             int proveraUnosa = 0;

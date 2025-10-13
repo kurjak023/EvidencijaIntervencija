@@ -33,5 +33,23 @@ namespace PrezentacioniSloj.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult RedirectNaPocetnu()
+        {
+            int? idKorisnika = HttpContext.Session.GetInt32("IDKorisnika");
+
+            if (idKorisnika == null)
+            {
+                TempData["LoginMsg"] = "Molimo prijavite se da biste nastavili.";
+                return RedirectToAction("Prijava", "Nalog");
+            }
+
+            var tip = HttpContext.Session.GetString("TipKorisnika") ?? "obican_korisnik";
+
+            if (string.Equals(tip, "admin", StringComparison.OrdinalIgnoreCase))
+                return RedirectToAction("AdminPocetna", "Admin");
+
+            return RedirectToAction("KorisnikPocetna", "Korisnik");
+        }
     }
 }

@@ -7,7 +7,16 @@
 
 <div class="card">
     <h4 class="text-center mb-4">Registracija</h4>
-    <form asp-action="Registracija" method="post" class="">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <form asp-controller="Nalog" asp-action="Registracija" method="post" class="">
         <input type="hidden" name="TipKorisnika" value="obican_korisnik">
         <input type="hidden" name="ImeOblasti" value="ime">
         <div class="row text-left">
@@ -25,9 +34,9 @@
 
         <div class="row text-left">
             <div class="form-group col-sm-6 flex-column d-flex">
-                <label asp-for="Email">E-mail adresa<span class="text-danger"> *</span></label>
-                <input asp-for="Email" class="form-control">
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="KorisnickoIme">Korisnicko Ime<span class="text-danger"> *</span></label>
+                <input asp-for="KorisnickoIme" class="form-control">
+                <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
             </div>
             <div class="form-group col-sm-6 flex-column d-flex">
                 <label asp-for="Lozinka">Lozinka<span class="text-danger"> *</span></label>
@@ -39,10 +48,11 @@
         <div class="row text-left">
             <div class="form-group col-sm-6 flex-column d-flex">
                 <label asp-for="PotvrdaLozinke">Potvrda Lozinke<span class="text-danger"> *</span></label>
-                <input asp-for="PotvrdaLozinke" class="form-control">
+                <input asp-for="PotvrdaLozinke" type="password" class="form-control">
                 <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
             </div>
         </div>
+
 
         <button type="submit" class="btn btn-sm btn-success">Registruj se</button>
     </form>

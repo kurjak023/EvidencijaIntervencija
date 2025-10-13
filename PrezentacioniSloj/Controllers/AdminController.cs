@@ -1,10 +1,28 @@
 ﻿using AplikacioniSloj;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using SlojPodataka.Klase; // clsKorisnik
 using System.Data;
 
 namespace PrezentacioniSloj.Controllers
 {
+    public class AdminOnlyAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            var http = context.HttpContext;
+            var tip = http.Session.GetString("TipKorisnika");
+
+            if (!string.Equals(tip, "admin", StringComparison.OrdinalIgnoreCase))
+            {
+                context.Result = new RedirectToActionResult("RedirectNaPocetnu", "Home", null);
+                return;
+            }
+
+            base.OnActionExecuting(context);
+        }
+    }
+
     public class AdminController : Controller
     {
         private readonly clsKorisnikServis _korisnikServis;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SlojPodataka.Klase;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace PrezentacioniSloj.Controllers
 {
@@ -26,30 +27,47 @@ namespace PrezentacioniSloj.Controllers
         [HttpPost]
         public IActionResult Registracija(RegistracijaModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // Provera lozinke
+            if (!string.Equals(model.Lozinka, model.PotvrdaLozinke))
             {
-                bool uspesnaRegistracija = _korisnikServis.Dodaj(new clsKorisnik
+                ModelState.AddModelError(nameof(model.PotvrdaLozinke), "Lozinke se ne poklapaju.");
+                return View(model);
+            }
+
+            // Provera Korisnickog imena
+            var postoji = _korisnikServis.PrikaziPoKorisnickomImenu(model.KorisnickoIme);
+            if (postoji != null)
+            {
+                ModelState.AddModelError(nameof(model.KorisnickoIme), "Korisničko ime je već zauzeto.");
+                return View(model);
+            }
+
+            try
+            {
+                var ok = _korisnikServis.Dodaj(new clsKorisnik
                 {
                     Ime = model.Ime,
                     Prezime = model.Prezime,
                     KorisnickoIme = model.KorisnickoIme,
-                    Lozinka = model.Lozinka
+                    Lozinka = model.Lozinka,
+                    TipKorisnika = "obican_korisnik"
                 });
-
-                if (uspesnaRegistracija)
+                if (!ok)
                 {
-                    // Ukoliko je registracija uspešna, preusmeri korisnika na odgovarajući view ili akciju
-                    return RedirectToAction("Prijava");
+                    ModelState.AddModelError("", "Registracija nije uspela. Pokušajte ponovo.");
+                    return View(model);
                 }
-                else
-                {
-                    // Ukoliko registracija nije uspela, može se dodati odgovarajuća logika ili poruka
-                    ModelState.AddModelError(string.Empty, "Registracija nije uspešna. Pokušajte ponovo.");
-                }
+                TempData["Success"] = "Nalog je kreiran. Prijavite se.";
+                return RedirectToAction("Prijava");
             }
-
-            // Ako ModelState nije validan, vraća se isti view sa postojećim podacima
-            return View(model);
+            catch (InvalidOperationException ex) when (ex.Message == "USERNAME_TAKEN")
+            {
+                ModelState.AddModelError(nameof(model.KorisnickoIme), "Korisničko ime je već zauzeto.");
+                return View(model);
+            }
         }
 
         [HttpGet]

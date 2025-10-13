@@ -29,11 +29,6 @@ namespace AplikacioniSloj
             return _repo.DajKorisnikaPoPrezimenu(prezime);
         }
 
-        public clsKorisnik PrikaziPoKorisnickomImenu(string KorisnickoIme)
-        {
-            return _repo.DajKorisnikaPoKorisnickomImenu(KorisnickoIme);
-        }
-
         public bool Dodaj(clsKorisnik objKorisnik)
         {
             return _repo.NoviKorisnik(objKorisnik);
@@ -47,6 +42,11 @@ namespace AplikacioniSloj
         public bool Izmeni(int StariID, clsKorisnik objNoviKorisnik)
         {
             return _repo.IzmeniKorisnika(StariID, objNoviKorisnik);
+        }
+        
+        public clsKorisnik PrikaziPoKorisnickomImenu(string KorisnickoIme)
+        {
+            return _repo.DajKorisnikaPoKorisnickomImenu(KorisnickoIme);
         }
     }
 }
