@@ -11,6 +11,7 @@ namespace AplikacioniSloj
     public class clsIntervencijaServis
     {
         private IIntervencijaRepo _repo;
+        public string? LastError { get; private set; }
 
         //Konstruktor
         public clsIntervencijaServis(IIntervencijaRepo repo)
@@ -35,7 +36,9 @@ namespace AplikacioniSloj
 
         public bool DodajIntervenciju(int IDOglasa, int IDKorisnika, string Opis)
         {
-            return _repo.DodajIntervenciju(IDOglasa, IDKorisnika, Opis);
+            var ok = _repo.DodajIntervenciju(IDOglasa, IDKorisnika, Opis);
+            if (!ok) LastError = "Intervencija nije sačuvana.";
+            return ok;
         }
     }
 }

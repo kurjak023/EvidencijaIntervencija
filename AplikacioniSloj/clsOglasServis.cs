@@ -12,15 +12,17 @@ namespace AplikacioniSloj
     public class clsOglasServis
     {
         private IOglasRepo _repo;
+        private clsIntervencijaServis _intervencijaServis;
         private clsPoslovnaPravila _poslovnaPravila;
 
         public string? LastError { get; private set; }
 
 
         //Konstruktor
-        public clsOglasServis(IOglasRepo repo, clsPoslovnaPravila poslovnaPravila)
+        public clsOglasServis(IOglasRepo repo,clsIntervencijaServis intervencijaServis , clsPoslovnaPravila poslovnaPravila)
         {
             _repo = repo;
+            _intervencijaServis = intervencijaServis;
             _poslovnaPravila = poslovnaPravila;
             LastError = null;
         }
@@ -73,7 +75,10 @@ namespace AplikacioniSloj
                 return false;
             }
 
-            return true;
+            var ok = _intervencijaServis.DodajIntervenciju(IDOglasa, IDKorisnika, opisIntervencije.Trim());
+            if (!ok) { LastError = _intervencijaServis.LastError ?? "Intervencija nije sačuvana."; }
+
+            return ok;
         }
     }
 }

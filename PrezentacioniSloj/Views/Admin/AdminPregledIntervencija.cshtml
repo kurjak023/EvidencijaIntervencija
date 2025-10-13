@@ -16,7 +16,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>IDIntervencije</th>
+                <th>IntervencijaID</th>
                 <th>Opis</th>
                 <th>Adresa</th>
                 <th>ZgradaID</th>
@@ -29,7 +29,7 @@
 
             {
                 <tr>
-                    <td>@row["IDIntervencije"]</td>
+                    <td>@row["IntervencijaID"]</td>
                     <td>@row["Opis"]</td>
                     <td>@(row.Table.Columns.Contains("Adresa") ? row["Adresa"] : "-")</td>
                     <td>@row["ZgradaID"]</td>
