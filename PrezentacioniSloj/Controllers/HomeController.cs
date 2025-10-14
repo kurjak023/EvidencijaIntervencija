@@ -51,5 +51,11 @@ namespace PrezentacioniSloj.Controllers
 
             return RedirectToAction("KorisnikPocetna", "Korisnik");
         }
+
+        public IActionResult Odjava()
+        {
+            HttpContext.Session.Clear(); // briše sve podatke iz sesije
+            return RedirectToAction("Pocetna", "Home");
+        }
     }
 }
